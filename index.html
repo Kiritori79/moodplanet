@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>情绪星球 MoodPlanet · 看见情绪，就是改变的开始</title>
+<meta name="description" content="情绪星球帮你记录每日情绪变化，AI 分析情绪触发因素，并推荐冥想、音乐、运动等专属疏解方案。数据端到端加密，仅你可见。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Ccircle cx='17' cy='15' r='8.5' fill='%237AAEC0'/%3E%3Cellipse cx='17' cy='15' rx='14.5' ry='5' fill='none' stroke='%23FFB2C1' stroke-width='2.5' transform='rotate(-18 17 15)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E8F5F9;
+  --ink:#1F1F1F;
+  --ink-2:#555555;
+  --ink-3:#7A8B94;
+  --blue:#7AAEC0;
+  --blue-d:#5C8A9B;
+  --pink:#FFB2C1;
+  --pink-d:#C4808F;
+  --pink-t:#A65B68;
+  --green:#C7E5D4;
+  --green-d:#6FA085;
+  --green-t:#5C8A6F;
+  --green-t2:#4F7A63;
+  --glass:rgba(255,255,255,.62);
+  --glass-strong:rgba(255,255,255,.75);
+  --stroke:rgba(255,255,255,.78);
+  --shadow:0 10px 34px rgba(122,174,192,.12);
+  --shadow-soft:0 8px 32px rgba(122,174,192,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans SC','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  background:var(--bg);color:var(--ink);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.container{max-width:1200px;margin:0 auto;padding:0 40px}
+.num{font-family:'Outfit','Noto Sans SC',sans-serif}
+
+/* ---------- Header ---------- */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.72);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,.6);
+}
+.nav{height:76px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand-name{font-size:21px;font-weight:600}
+.nav-links{display:flex;gap:40px}
+.nav-links a{font-size:15px;font-weight:500;color:var(--ink-2);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--blue-d)}
+.nav-actions{display:flex;align-items:center;gap:24px}
+.login{font-size:15px;font-weight:500;color:var(--ink-2);text-decoration:none}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:inherit;font-size:15px;font-weight:500;text-decoration:none;cursor:pointer;
+  border:none;border-radius:50px;transition:transform .2s,box-shadow .2s;
+}
+.btn-nav{padding:11px 26px;background:var(--blue);color:#fff;box-shadow:0 4px 16px rgba(122,174,192,.35)}
+.btn-nav:hover{transform:translateY(-2px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;padding:96px 0 88px;overflow:hidden;text-align:center}
+.glow{position:absolute;border-radius:50%;filter:blur(110px);pointer-events:none}
+.glow-1{width:620px;height:620px;left:-160px;top:-120px;background:rgba(255,178,193,.5)}
+.glow-2{width:470px;height:470px;right:-60px;top:0;background:rgba(255,244,196,.6)}
+.glow-3{width:520px;height:520px;right:40px;bottom:-140px;background:rgba(199,229,212,.5)}
+.glow-4{width:500px;height:500px;left:-150px;bottom:-120px;background:rgba(184,196,214,.45)}
+.hero-inner{position:relative;z-index:1}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:50px;
+  background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.8);
+  font-size:13px;font-weight:500;color:var(--ink-2);
+}
+.badge-dot{width:8px;height:8px;border-radius:50%;background:var(--pink)}
+h1{
+  margin:26px auto 0;max-width:820px;
+  font-size:clamp(36px,5vw,56px);font-weight:600;line-height:1.32;letter-spacing:-.5px;
+}
+.sub{
+  margin:18px auto 0;max-width:680px;
+  font-size:18px;line-height:1.67;color:var(--ink-2);
+}
+.cta-row{margin-top:34px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-primary{padding:16px 38px;background:var(--blue);color:#fff;font-size:17px;box-shadow:0 8px 24px rgba(122,174,192,.35)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{padding:16px 38px;background:rgba(255,255,255,.8);color:var(--ink);font-size:17px;border:1px solid rgba(187,211,220,1)}
+.btn-ghost:hover{transform:translateY(-2px);background:#fff}
+.trust{margin-top:18px;font-size:13px;color:#7A8B94}
+
+/* Hero demo */
+.demo-wrap{position:relative;margin:56px auto 0;max-width:920px}
+.demo-card{
+  background:var(--glass);border:1px solid var(--stroke);border-radius:24px;
+  padding:32px;box-shadow:0 16px 48px rgba(122,174,192,.14);
+  backdrop-filter:blur(8px);text-align:left;
+}
+.demo-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.demo-title{font-size:20px;font-weight:600}
+.demo-sub{margin-top:4px;font-size:13px;color:var(--ink-3)}
+.chart{margin-top:20px;width:100%;height:auto}
+.insight{
+  margin-top:20px;display:flex;align-items:center;gap:12px;
+  padding:14px 18px;border-radius:16px;background:rgba(255,255,255,.6);
+}
+.insight-dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--pink)}
+.insight-tag{flex:none;font-size:13px;font-weight:600;color:var(--pink-t)}
+.insight-body{flex:1;font-size:14px;color:var(--ink-2);line-height:1.5}
+.insight-link{flex:none;font-size:14px;font-weight:500;color:var(--blue-d);text-decoration:none}
+.float-card{
+  position:absolute;width:210px;padding:16px;border-radius:16px;
+  background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.9);
+  box-shadow:0 10px 30px rgba(122,174,192,.16);text-align:left;
+  animation:float 5s ease-in-out infinite;
+}
+.float-sos{right:-30px;top:-36px}
+.float-breath{left:-40px;top:110px;animation-delay:2.5s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.float-title{margin-top:8px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.float-desc{margin-top:6px;font-size:12px;color:var(--ink-2);line-height:1.5}
+
+/* ---------- Sections ---------- */
+section{padding:88px 0}
+.sec-head{text-align:center;max-width:760px;margin:0 auto 56px}
+.kicker{font-family:'Outfit','Noto Sans SC',sans-serif;font-size:12px;font-weight:500;letter-spacing:1.6px;color:var(--blue-d)}
+.sec-title{margin-top:14px;font-size:clamp(26px,3vw,36px);font-weight:600;line-height:1.33}
+.sec-desc{margin-top:14px;font-size:16px;line-height:1.7;color:var(--ink-2)}
+
+.card{
+  background:var(--glass);border:1px solid var(--stroke);border-radius:24px;
+  box-shadow:var(--shadow-soft);
+}
+
+/* How it works */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.step{padding:28px;min-height:268px}
+.icon-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.ic-blue{background:rgba(122,174,192,.16)}
+.ic-pink{background:rgba(255,178,193,.3)}
+.ic-green{background:rgba(199,229,212,.6)}
+.step-label{margin-top:16px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;letter-spacing:1.2px}
+.step-title{margin-top:8px;font-size:21px;font-weight:600}
+.step-desc{margin-top:8px;font-size:15px;line-height:1.67;color:var(--ink-2)}
+
+/* Core features */
+.feature{display:grid;grid-template-columns:480px 1fr;gap:56px;align-items:center;margin-bottom:72px}
+.feature:last-child{margin-bottom:0}
+.feature:nth-child(even) .f-text{order:2}
+.tag{display:inline-flex;padding:7px 16px;border-radius:50px;font-size:13px;font-weight:500}
+.tag-blue{background:rgba(122,174,192,.16);color:var(--blue-d)}
+.tag-pink{background:rgba(255,178,193,.3);color:var(--pink-t)}
+.tag-green{background:rgba(199,229,212,.75);color:var(--green-t)}
+.f-title{margin-top:18px;font-size:28px;font-weight:600;line-height:1.36}
+.f-desc{margin-top:14px;font-size:16px;line-height:1.7;color:var(--ink-2)}
+.f-points{margin-top:16px;font-size:15px;line-height:2;color:var(--ink)}
+.f-points span{display:block}
+.vcard{padding:28px;min-height:400px}
+.vcard-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.vcard-title{font-size:17px;font-weight:600}
+.vcard-meta{font-size:13px;color:var(--ink-3)}
+.moods{margin-top:22px;display:flex;gap:16px}
+.mood{width:46px;height:46px;border-radius:50%;flex:none}
+.mood-1{background:rgba(123,182,97,.35)}
+.mood-2{background:#C7E5D4}
+.mood-3{background:#D4E6EB}
+.mood-4{background:#FFB2C1;border:3px solid var(--blue)}
+.mood-5{background:rgba(208,128,104,.3)}
+.intensity{margin-top:22px}
+.int-row{display:flex;justify-content:space-between;font-size:14px}
+.int-label{color:var(--ink-2)}
+.int-value{font-family:'Outfit',sans-serif;font-weight:500}
+.track{margin-top:10px;height:14px;border-radius:50px;background:rgba(255,255,255,.9);padding:3px}
+.track-fill{width:70%;height:100%;border-radius:50px;background:var(--blue)}
+.pill-row{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+.pill{padding:7px 14px;border-radius:50px;font-size:13px}
+.pill-plain{background:rgba(255,255,255,.8);border:1px solid #D4E5EB;color:var(--ink-2)}
+.pill-pink{background:rgba(255,178,193,.3);color:var(--pink-t)}
+.bars{margin-top:24px;display:flex;flex-direction:column;gap:22px}
+.bar-row .bar-label{display:flex;justify-content:space-between;font-size:14px}
+.bar-name{color:var(--ink)}
+.bar-pct{font-family:'Outfit',sans-serif;font-weight:500}
+.bar-track{margin-top:9px;height:10px;border-radius:50px;background:rgba(255,255,255,.7)}
+.bar-fill{height:100%;border-radius:50px}
+.rec-list{margin-top:20px;display:flex;flex-direction:column;gap:14px}
+.rec{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:16px;background:rgba(255,255,255,.65)}
+.rec-icon{flex:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.rec-name{flex:1;font-size:15px;font-weight:500}
+.rec-dur{font-family:'Outfit',sans-serif;font-size:13px;font-weight:500}
+.compare{
+  margin-top:18px;display:flex;align-items:center;gap:10px;
+  padding:13px 18px;border-radius:16px;background:rgba(199,229,212,.45);
+  font-size:14px;font-weight:500;color:var(--green-t2);
+}
+
+/* Bento */
+.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.b-sos{grid-column:span 2;padding:28px;background:rgba(255,178,193,.22)}
+.b-head{display:flex;align-items:center;gap:12px}
+.b-title{font-size:18px;font-weight:600}
+.b-desc{margin-top:14px;font-size:15px;line-height:1.67;color:var(--ink-2)}
+.sos-steps{margin-top:14px;font-size:14px;font-weight:500;color:#8A5F68;line-height:1.85}
+.sos-note{margin-top:12px;font-size:13px;color:#8A5F68}
+.sos-btn{margin-top:16px;display:inline-flex;padding:11px 24px;border-radius:50px;background:rgba(255,255,255,.85);font-size:14px;font-weight:500;color:var(--pink-t)}
+.b-cal{padding:28px}
+.heatmap{margin-top:16px;width:100%;height:auto}
+.b-tree,.b-report,.b-priv{padding:26px}
+.tree-svg{margin-top:14px;width:100%;height:auto}
+.trend-svg{margin-top:14px;width:100%;height:auto}
+.priv-points{margin-top:14px;font-size:14px;font-weight:500;color:var(--green-t2);line-height:1.85}
+
+/* FAQ */
+.faq-list{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.faq-item{background:var(--glass);border:1px solid var(--stroke);border-radius:20px;box-shadow:0 6px 24px rgba(122,174,192,.07);overflow:hidden}
+.faq-q{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 26px;cursor:pointer;user-select:none}
+.faq-q h3{font-size:17px;font-weight:500}
+.faq-arrow{flex:none;transition:transform .3s}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 26px}
+.faq-a p{padding-bottom:22px;font-size:15px;line-height:1.73;color:var(--ink-2)}
+.faq-item.open .faq-a{max-height:220px}
+
+/* Final CTA */
+.cta-section{padding:72px 0 88px}
+.cta-card{
+  max-width:1200px;margin:0 auto;padding:64px 72px;border-radius:32px;text-align:center;
+  background:linear-gradient(135deg,#F8CBD6 0%,#D9E8EC 52%,#C7EBD9 100%);
+  box-shadow:0 16px 48px rgba(122,174,192,.15);
+}
+.cta-kicker{font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;letter-spacing:1.6px;color:var(--blue-d)}
+.cta-title{margin-top:16px;font-size:clamp(30px,4vw,40px);font-weight:600;line-height:1.35}
+.cta-desc{margin-top:14px;font-size:16px;line-height:1.7;color:var(--ink-2)}
+.cta-trust{margin-top:20px;font-size:13px;color:#55707C}
+
+/* Footer */
+footer{background:rgba(255,255,255,.5);padding:56px 0 36px;position:relative;overflow:hidden}
+.foot-mark{position:absolute;right:60px;top:-40px;opacity:.32;pointer-events:none}
+.foot-top{display:flex;justify-content:space-between;gap:48px;flex-wrap:wrap}
+.brand-col{max-width:380px}
+.foot-brand{display:flex;align-items:center;gap:10px}
+.foot-name{font-size:19px;font-weight:600}
+.foot-tagline{margin-top:14px;font-size:14px;line-height:1.7;color:var(--ink-2)}
+.foot-cols{display:flex;gap:64px}
+.foot-col{min-width:130px}
+.foot-col h4{font-size:14px;font-weight:600;margin-bottom:12px}
+.foot-col a{display:block;font-size:14px;color:var(--ink-2);text-decoration:none;line-height:30px}
+.foot-col a:hover{color:var(--blue-d)}
+.divider{margin-top:32px;height:1px;background:#D4E5EB}
+.foot-bottom{margin-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:13px;color:var(--ink-3)}
+
+/* Responsive */
+@media (max-width:1024px){
+  .nav-links{display:none}
+  .feature{grid-template-columns:1fr;gap:32px}
+  .feature:nth-child(even) .f-text{order:0}
+  .steps{grid-template-columns:1fr}
+  .bento{grid-template-columns:1fr 1fr}
+  .b-sos{grid-column:span 2}
+  .float-card{display:none}
+  .demo-wrap{max-width:100%}
+}
+@media (max-width:640px){
+  .container{padding:0 20px}
+  .bento{grid-template-columns:1fr}
+  .b-sos{grid-column:span 1}
+  .foot-cols{flex-wrap:wrap;gap:32px}
+  .cta-card{padding:48px 28px}
+  .float-card{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ Header ============ -->
+<header>
+  <div class="container nav">
+    <a class="brand" href="#top" aria-label="情绪星球">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="17" cy="15" r="8.5" fill="#7AAEC0"/><ellipse cx="17" cy="15" rx="14.5" ry="5" fill="none" stroke="#FFB2C1" stroke-width="2.5" transform="rotate(-18 17 15)"/><circle cx="23" cy="26" r="3" fill="#C7E5D4"/></svg>
+      <span class="brand-name">情绪星球</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#how">如何运作</a>
+      <a href="#features">核心功能</a>
+      <a href="#more">更多功能</a>
+      <a href="#faq">常见问题</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="login" href="#">登录</a>
+      <a class="btn btn-nav" href="#">免费开始</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ Hero ============ -->
+<section class="hero" id="top">
+  <div class="glow glow-1"></div><div class="glow glow-2"></div>
+  <div class="glow glow-3"></div><div class="glow glow-4"></div>
+  <div class="container hero-inner">
+    <div class="badge"><span class="badge-dot"></span>自助式情绪管理工具 · 科学循证</div>
+    <h1>看见情绪，就是改变的开始</h1>
+    <p class="sub">情绪星球帮你记录每日情绪变化，AI 分析情绪触发因素，并推荐冥想、音乐、运动等专属疏解方案。30 秒打卡，让每一次情绪波动都成为了解自己的线索。</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#">免费开始记录</a>
+      <a class="btn btn-ghost" href="#how">观看产品演示</a>
+    </div>
+    <p class="trust">数据本地加密 · 仅你可见 · 支持随时导出删除</p>
+
+    <div class="demo-wrap">
+      <div class="float-card float-sos">
+        <div class="float-title">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke="#D08068" stroke-width="2"/><circle cx="11" cy="11" r="3.5" stroke="#D08068" stroke-width="2" fill="none"/><path d="M11 0.5V4M11 18V21.5M0.5 11H4M18 11H21.5" stroke="#D08068" stroke-width="2" stroke-linecap="round"/></svg>
+          情绪 SOS 急救
+        </div>
+        <p class="float-desc">焦虑突发时的快速安抚流程</p>
+      </div>
+      <div class="float-card float-breath">
+        <div class="float-title">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M2 8C4.5 5.5 7 4.5 9.5 6C12 7.5 14.5 8.5 17 6.5C18.5 5.4 20 4.5 21 4" stroke="#7AAEC0" stroke-width="2" stroke-linecap="round"/><path d="M2 14C4.5 11.5 7 10.5 9.5 12C12 13.5 14.5 14.5 17 12.5C18.5 11.4 20 10.5 21 10" stroke="#C7E5D4" stroke-width="2" stroke-linecap="round"/><path d="M5 18.5C6.5 17.2 8 16.8 9.5 17.7" stroke="#FFB2C1" stroke-width="2" stroke-linecap="round"/></svg>
+          正在为你推荐
+        </div>
+        <p class="float-desc">4-7-8 呼吸练习 · 3 分钟</p>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-head">
+          <div>
+            <div class="demo-title">本周情绪曲线</div>
+            <div class="demo-sub num">2026年10月 · 第2周 · 平均情绪指数 6.4</div>
+          </div>
+        </div>
+        <svg class="chart" viewBox="0 0 856 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="本周情绪曲线图">
+          <path d="M40 92L170 74L300 146L430 110L560 92L690 47L820 38L820 200L40 200Z" fill="#7AAEC0" fill-opacity="0.13"/>
+          <path d="M40 20H820M40 60H820M40 100H820M40 140H820M40 180H820" stroke="#D4E5EB" stroke-width="1" stroke-dasharray="4 6"/>
+          <path d="M300 20V200" stroke="#FFB2C1" stroke-width="1.5" stroke-dasharray="5 5"/>
+          <path d="M40 92L170 74L300 146L430 110L560 92L690 47L820 38" stroke="#7AAEC0" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="40" cy="92" r="6" fill="#7AAEC0" stroke="white" stroke-width="2"/>
+          <circle cx="170" cy="74" r="6" fill="#7AAEC0" stroke="white" stroke-width="2"/>
+          <circle cx="300" cy="146" r="8" fill="#D08068" stroke="white" stroke-width="2"/>
+          <circle cx="430" cy="110" r="6" fill="#7AAEC0" stroke="white" stroke-width="2"/>
+          <circle cx="560" cy="92" r="6" fill="#7AAEC0" stroke="white" stroke-width="2"/>
+          <circle cx="690" cy="47" r="6" fill="#7BB661" stroke="white" stroke-width="2"/>
+          <circle cx="820" cy="38" r="6" fill="#7BB661" stroke="white" stroke-width="2"/>
+          <text x="40" y="228" font-size="12" fill="#7A8B94" text-anchor="middle" font-family="Noto Sans SC, sans-serif">周一</text>
+          <text x="170" y="228" font-size="12" fill="#7A8B94" text-anchor="middle" font-family="Noto Sans SC, sans-serif">周二</text>
+          <text x="300" y="228" font-size="12" fill="#A65B68" text-anchor="middle" font-family="Noto Sans SC, sans-serif">周三</text>
+          <text x="430" y="228" font-size="12" fill="#7A8B94" text-anchor="middle" font-family="Noto Sans SC, sans-serif">周四</text>
+          <text x="560" y="228" font-size="12" fill="#7A8B94" text-anchor="middle" font-family="Noto Sans SC, sans-serif">周五</text>
+          <text x="690" y="228" font-size="12" fill="#7A8B94" text-anchor="middle" font-family="Noto Sans SC, sans-serif">周六</text>
+          <text x="820" y="228" font-size="12" fill="#7A8B94" text-anchor="middle" font-family="Noto Sans SC, sans-serif">周日</text>
+        </svg>
+        <div class="insight">
+          <span class="insight-dot"></span>
+          <span class="insight-tag">AI 洞察</span>
+          <span class="insight-body">周三焦虑峰值与前一晚睡眠不足高度相关，建议提前 30 分钟入睡</span>
+          <a class="insight-link" href="#features">查看分析 ›</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ How it works ============ -->
+<section id="how">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">HOW IT WORKS</div>
+      <h2 class="sec-title">情绪不是麻烦，是值得被读懂的信号</h2>
+      <p class="sec-desc">三步建立属于你的情绪档案：记录当下的真实感受，找出反复出现的触发因素，再用科学的方式把自己稳稳接住。</p>
+    </div>
+    <div class="steps">
+      <div class="card step">
+        <div class="icon-circle ic-blue">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16.5 3.5L20.5 7.5L8 20H4V16L16.5 3.5Z" stroke="#7AAEC0" stroke-width="2" stroke-linejoin="round"/><path d="M14 6L18 10" stroke="#7AAEC0" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="step-label" style="color:#5C8A9B">STEP 01</div>
+        <div class="step-title">记录当下</div>
+        <p class="step-desc">30 秒完成情绪打卡：拖动心情强度、添加标签，也可以直接用语音说出刚刚发生了什么。</p>
+      </div>
+      <div class="card step">
+        <div class="icon-circle ic-pink">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 17L9 11L13 15L21 7" stroke="#C4808F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 7H21V12" stroke="#C4808F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="step-label" style="color:#C4808F">STEP 02</div>
+        <div class="step-title">读懂模式</div>
+        <p class="step-desc">AI 将情绪数据与睡眠、天气、社交、工作时段交叉分析，告诉你哪些因素在反复影响你。</p>
+      </div>
+      <div class="card step">
+        <div class="icon-circle ic-green">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 20.5S4.5 15.8 4.5 10.5A4.5 4.5 0 0112 7.6A4.5 4.5 0 0119.5 10.5C19.5 15.8 12 20.5 12 20.5Z" stroke="#6FA085" stroke-width="2" stroke-linejoin="round"/><path d="M12 7.6A3 3 0 0112 13.6" stroke="#6FA085" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="step-label" style="color:#6FA085">STEP 03</div>
+        <div class="step-title">把自己接住</div>
+        <p class="step-desc">根据当下状态推荐冥想、呼吸、音乐或微运动方案，并对比疏解前后的情绪变化。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Core features ============ -->
+<section id="features">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">CORE FEATURES</div>
+      <h2 class="sec-title">三个动作，构成完整的情绪循环</h2>
+      <p class="sec-desc">把心理学里被反复验证的自助方法，变成每天几分钟就能完成的练习。</p>
+    </div>
+
+    <!-- 记录 -->
+    <div class="feature">
+      <div class="f-text">
+        <span class="tag tag-blue">记录</span>
+        <h3 class="f-title">每天 30 秒，把感受说清楚</h3>
+        <p class="f-desc">不想写字也没关系。拖动心情强度、点选标签，或者直接对着手机说出刚才发生了什么，语音自动转为日记。</p>
+        <div class="f-points">
+          <span>✓ 心情强度 1-10 级滑动记录</span>
+          <span>✓ 语音转文字，走路也能完成打卡</span>
+          <span>✓ 错过的那天，可以随时补记</span>
+        </div>
+      </div>
+      <div class="card vcard">
+        <div class="vcard-head">
+          <span class="vcard-title">今天的心情</span>
+          <span class="vcard-meta num">10月13日 21:40</span>
+        </div>
+        <div class="moods">
+          <div class="mood mood-1" title="很好"></div>
+          <div class="mood mood-2" title="还行"></div>
+          <div class="mood mood-3" title="一般"></div>
+          <div class="mood mood-4" title="低落（已选）"></div>
+          <div class="mood mood-5" title="很差"></div>
+        </div>
+        <div class="intensity">
+          <div class="int-row">
+            <span class="int-label">情绪强度</span>
+            <span class="int-value">7 / 10</span>
+          </div>
+          <div class="track"><div class="track-fill"></div></div>
+        </div>
+        <div class="pill-row">
+          <span class="pill pill-plain">工作压力</span>
+          <span class="pill pill-pink">睡眠不足</span>
+          <span class="pill pill-plain">家人</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 洞察 -->
+    <div class="feature">
+      <div class="f-text">
+        <span class="tag tag-pink">洞察</span>
+        <h3 class="f-title">找出反复出现的情绪开关</h3>
+        <p class="f-desc">把每天的记录与睡眠时长、天气、日程、社交频率交叉分析，标出真正影响你的因素，而不是靠感觉去猜。</p>
+        <div class="f-points">
+          <span>✓ 睡眠、天气、日程、社交多维交叉分析</span>
+          <span>✓ 每周一封情绪周报，总结你的情绪规律</span>
+          <span>✓ 手动标记事件，随时验证你的猜想</span>
+        </div>
+      </div>
+      <div class="card vcard">
+        <div class="vcard-head">
+          <span class="vcard-title">情绪触发因素排行</span>
+          <span class="vcard-meta">近 30 天</span>
+        </div>
+        <div class="bars">
+          <div class="bar-row">
+            <div class="bar-label"><span class="bar-name">睡眠不足</span><span class="bar-pct" style="color:#5C8A9B">78%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:78%;background:#7AAEC0"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span class="bar-name">工作会议</span><span class="bar-pct" style="color:#C4808F">64%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:64%;background:#FFB2C1"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span class="bar-name">社交疲惫</span><span class="bar-pct" style="color:#6FA085">41%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:41%;background:#C7E5D4"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 疏解 -->
+    <div class="feature">
+      <div class="f-text">
+        <span class="tag tag-green">疏解</span>
+        <h3 class="f-title">在情绪低落时，稳稳接住自己</h3>
+        <p class="f-desc">根据你此刻的状态推荐合适的方式，并对比疏解前后的情绪变化，让真的有用的方法留下来。</p>
+        <div class="f-points">
+          <span>✓ 4-7-8 呼吸、正念冥想、白噪音、微运动</span>
+          <span>✓ 情绪 SOS 模式，焦虑突发时 3 分钟安抚</span>
+          <span>✓ 疏解前后对比，看得见的情绪曲线回升</span>
+        </div>
+      </div>
+      <div class="card vcard">
+        <div class="vcard-head">
+          <span class="vcard-title">正在为你推荐</span>
+          <span class="vcard-meta">基于当前状态 · 低落 7/10</span>
+        </div>
+        <div class="rec-list">
+          <div class="rec">
+            <div class="rec-icon" style="background:rgba(122,174,192,.18)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8.5 8.5 0 019.5 4A7 7 0 1020 14.5Z" stroke="#7AAEC0" stroke-width="2" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="rec-name">正念呼吸引导 · 情绪着陆</span>
+            <span class="rec-dur" style="color:#5C8A9B">10 分钟</span>
+          </div>
+          <div class="rec">
+            <div class="rec-icon" style="background:rgba(255,178,193,.3)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 17.5V6L19 4V15" stroke="#C4808F" stroke-width="2" stroke-linecap="round"/><circle cx="6.5" cy="17.5" r="2.5" stroke="#C4808F" stroke-width="2"/><circle cx="16.5" cy="15" r="2.5" stroke="#C4808F" stroke-width="2"/></svg>
+            </div>
+            <span class="rec-name">疗愈钢琴歌单 · 由情绪匹配</span>
+            <span class="rec-dur" style="color:#C4808F">20 分钟</span>
+          </div>
+          <div class="rec">
+            <div class="rec-icon" style="background:rgba(199,229,212,.7)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 12H17" stroke="#6FA085" stroke-width="2" stroke-linecap="round"/><rect x="3.5" y="8" width="3.5" height="8" rx="1.75" stroke="#6FA085" stroke-width="2"/><rect x="17" y="8" width="3.5" height="8" rx="1.75" stroke="#6FA085" stroke-width="2"/></svg>
+            </div>
+            <span class="rec-name">办公室碎片拉伸 · 释放肩颈</span>
+            <span class="rec-dur" style="color:#6FA085">5 分钟</span>
+          </div>
+        </div>
+        <div class="compare">疏解后情绪指数 <span class="num">6.8 → 8.2</span>&nbsp;&nbsp;↑ 回升 1.4</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ More features ============ -->
+<section id="more">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">MORE TO EXPLORE</div>
+      <h2 class="sec-title">还有一些温柔的小工具</h2>
+      <p class="sec-desc">它们不是必需品，但在某些时刻，会刚刚好用得上。</p>
+    </div>
+    <div class="bento">
+      <div class="card b-sos">
+        <div class="b-head">
+          <div class="icon-circle" style="width:40px;height:40px;background:rgba(255,255,255,.75)">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke="#C4808F" stroke-width="2"/><circle cx="11" cy="11" r="3.5" stroke="#C4808F" stroke-width="2" fill="none"/><path d="M11 0.5V4M11 18V21.5M0.5 11H4M18 11H21.5" stroke="#C4808F" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="b-title">情绪 SOS 急救</span>
+        </div>
+        <p class="b-desc">焦虑突然涌上来的时候，先不用想清楚为什么。打开急救模式，跟着做完三步，身体会先帮你平静下来。</p>
+        <p class="sos-steps">① 4-7-8 呼吸，跟着节拍慢下来　　② 说出眼前看到的 5 样东西　　③ 双脚踩地，感受重心</p>
+        <p class="sos-note">适用于：心慌、过度思虑、深夜停不下来的想法</p>
+        <span class="sos-btn">3 分钟开始安抚</span>
+      </div>
+      <div class="card b-cal">
+        <div class="b-head">
+          <div class="icon-circle" style="width:40px;height:40px;background:rgba(122,174,192,.18)">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2.5" y="4.5" width="17" height="15" rx="3" stroke="#5C8A9B" stroke-width="2"/><path d="M2.5 9H19.5M7 2.5V6M15 2.5V6" stroke="#5C8A9B" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="b-title">情绪日历热力图</span>
+        </div>
+        <p class="b-desc">一眼看到这个月的情绪天气，也看到自己坚持的痕迹。</p>
+        <svg class="heatmap" viewBox="0 0 320 96" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="情绪日历热力图示意">
+          <rect x="0" y="0" width="36" height="18" rx="6" fill="#C7E5D4"/><rect x="43" y="0" width="36" height="18" rx="6" fill="#B4CADA"/><rect x="86" y="0" width="36" height="18" rx="6" fill="#F3AEBE"/><rect x="129" y="0" width="36" height="18" rx="6" fill="#E8F5F9"/><rect x="172" y="0" width="36" height="18" rx="6" fill="#A8D3BB"/><rect x="215" y="0" width="36" height="18" rx="6" fill="#9AC4D4"/><rect x="258" y="0" width="36" height="18" rx="6" fill="#F7CAD5"/>
+          <rect x="0" y="26" width="36" height="18" rx="6" fill="#E89AAB"/><rect x="43" y="26" width="36" height="18" rx="6" fill="#C7E5D4"/><rect x="86" y="26" width="36" height="18" rx="6" fill="#BBD3E0"/><rect x="129" y="26" width="36" height="18" rx="6" fill="#A8D3BB"/><rect x="172" y="26" width="36" height="18" rx="6" fill="#7AAEC0"/><rect x="215" y="26" width="36" height="18" rx="6" fill="#F0B7C5"/><rect x="258" y="26" width="36" height="18" rx="6" fill="#8FBFD1"/>
+          <rect x="0" y="52" width="36" height="18" rx="6" fill="#B6DEC6"/><rect x="43" y="52" width="36" height="18" rx="6" fill="#E8F5F9"/><rect x="86" y="52" width="36" height="18" rx="6" fill="#9FC6D8"/><rect x="129" y="52" width="36" height="18" rx="6" fill="#EEA6B6"/><rect x="172" y="52" width="36" height="18" rx="6" fill="#C7E5D4"/><rect x="215" y="52" width="36" height="18" rx="6" fill="#C2D6E2"/><rect x="258" y="52" width="36" height="18" rx="6" fill="#A8D3BB"/>
+          <rect x="0" y="78" width="36" height="18" rx="6" fill="#96C0D3"/><rect x="43" y="78" width="36" height="18" rx="6" fill="#F0B7C5"/><rect x="86" y="78" width="36" height="18" rx="6" fill="#B6DEC6"/><rect x="129" y="78" width="36" height="18" rx="6" fill="#A5CBDB"/><rect x="172" y="78" width="36" height="18" rx="6" fill="#E89AAB"/><rect x="215" y="78" width="36" height="18" rx="6" fill="#C7E5D4"/><rect x="258" y="78" width="36" height="18" rx="6" fill="#E8F5F9"/>
+        </svg>
+      </div>
+      <div class="card b-tree">
+        <div class="b-head">
+          <div class="icon-circle" style="width:40px;height:40px;background:rgba(255,178,193,.3)">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M20 12.5C20 15.5 17 18 13.5 18H8L4 20.5V12.5C4 8.5 7 6 10.5 6H13.5C17 6 20 8.5 20 12.5Z" stroke="#C4808F" stroke-width="2" stroke-linejoin="round"/><path d="M8 11H16M8 14H13" stroke="#C4808F" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <span class="b-title">匿名情绪树洞</span>
+        </div>
+        <p class="b-desc">不想说给认识的人听的时候，可以写在这里。陌生人只给温柔，不给评判。</p>
+        <svg class="tree-svg" viewBox="0 0 300 74" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="树洞对话示意">
+          <rect x="0" y="0" width="214" height="46" rx="14" fill="#EAF3F6"/>
+          <rect x="14" y="14" width="150" height="7" rx="3.5" fill="#AFC7D4"/>
+          <rect x="14" y="27" width="96" height="7" rx="3.5" fill="#C8DBE4"/>
+          <rect x="142" y="44" width="158" height="30" rx="14" fill="#F7CAD5"/>
+          <rect x="156" y="55" width="118" height="7" rx="3.5" fill="#E89AAB"/>
+        </svg>
+      </div>
+      <div class="card b-report">
+        <div class="b-head">
+          <div class="icon-circle" style="width:40px;height:40px;background:rgba(122,174,192,.18)">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="4" y="2.5" width="14" height="17" rx="3" stroke="#5C8A9B" stroke-width="2"/><path d="M8 8H14M8 12H14M8 16H11" stroke="#5C8A9B" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <span class="b-title">每周情绪周报</span>
+        </div>
+        <p class="b-desc">周日晚上送到你的邮箱，用一页纸说清这周的情绪走势与关键词。</p>
+        <svg class="trend-svg" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="情绪走势示意">
+          <path d="M0 44L50 34L100 48L150 22L200 30L250 12L300 18" stroke="#7AAEC0" stroke-width="3" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="250" cy="12" r="5" fill="#7BB661"/>
+        </svg>
+      </div>
+      <div class="card b-priv">
+        <div class="b-head">
+          <div class="icon-circle" style="width:40px;height:40px;background:rgba(199,229,212,.7)">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="4.5" y="9.5" width="13" height="10" rx="3" stroke="#6FA085" stroke-width="2"/><path d="M7.5 9.5V7A3.5 3.5 0 0114.5 7V9.5" stroke="#6FA085" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="b-title">加密与多端同步</span>
+        </div>
+        <p class="b-desc">情绪日记属于最私人的部分，所以我们把它锁起来，也让你随时带走。</p>
+        <p class="priv-points">· 端到端加密，仅你可见<br>· 手机、平板、电脑自动同步<br>· 一键导出或彻底删除</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">FAQ</div>
+      <h2 class="sec-title">你可能想知道的事</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <div class="faq-q">
+          <h3>我的情绪记录会被别人看到吗？</h3>
+          <svg class="faq-arrow" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 13L10 8L15 13" stroke="#7AAEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="faq-a"><p>不会。所有记录默认端到端加密，只有你自己能看到。你还可以随时一键导出，或者彻底删除，数据的主导权始终在你手上。</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <h3>情绪分析有科学依据吗？</h3>
+          <svg class="faq-arrow" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 8L10 13L15 8" stroke="#7A8B94" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="faq-a"><p>分析参考了情绪日记法与认知行为疗法中的情绪记录技术，把触发因素拆解为睡眠、日程、社交等可观察维度。它不能替代专业心理咨询，但能帮你更早看见自己的规律。</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <h3>每天需要花很多时间吗？</h3>
+          <svg class="faq-arrow" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 8L10 13L15 8" stroke="#7A8B94" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="faq-a"><p>一次打卡只需要 30 秒，语音记录也控制在 1 分钟内。我们没有连胜打卡的设计——漏记了就补，忙碌的日子跳过也没关系。</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <h3>不喜欢写文字怎么办？</h3>
+          <svg class="faq-arrow" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 8L10 13L15 8" stroke="#7A8B94" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="faq-a"><p>可以直接拖动强度、点选标签完成记录；想多说两句时，对着手机讲就好，语音会自动转成文字日记。</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <h3>情绪一直很低落，这个工具够用吗？</h3>
+          <svg class="faq-arrow" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 8L10 13L15 8" stroke="#7A8B94" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="faq-a"><p>情绪星球是自助工具，不能替代专业诊疗。如果你持续两周以上情绪低落、影响睡眠与生活，请一定寻求专业帮助——应用内的「心理支持资源」整理了可信的求助渠道。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Final CTA ============ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <div class="cta-kicker">START TONIGHT</div>
+      <h2 class="cta-title">今晚，先记录一次心情</h2>
+      <p class="cta-desc">不需要连续 21 天，也不用写得漂亮。哪怕只有一句话，情绪也开始有了出口。</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#">免费开始记录</a>
+        <a class="btn btn-ghost" href="#more">看看示例周报</a>
+      </div>
+      <p class="cta-trust">已有 32 万人在情绪星球记录心情 · 数据端到端加密，仅你可见</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Footer ============ -->
+<footer>
+  <svg class="foot-mark" width="240" height="240" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg"><circle cx="130" cy="130" r="54" fill="#BBD3E0"/><ellipse cx="130" cy="130" rx="112" ry="38" fill="none" stroke="#F7CAD5" stroke-width="12" transform="rotate(-18 130 130)"/></svg>
+  <div class="container">
+    <div class="foot-top">
+      <div class="brand-col">
+        <div class="foot-brand">
+          <svg width="30" height="30" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg"><circle cx="17" cy="15" r="8.5" fill="#7AAEC0"/><ellipse cx="17" cy="15" rx="14.5" ry="5" fill="none" stroke="#FFB2C1" stroke-width="2.5" transform="rotate(-18 17 15)"/></svg>
+          <span class="foot-name">情绪星球</span>
+        </div>
+        <p class="foot-tagline">让情绪被看见，也让你被自己善待。<br>情绪星球是一款自助式情绪记录与疏解工具，不替代专业诊疗。</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4>产品</h4>
+          <a href="#features">功能总览</a>
+          <a href="#features">情绪记录</a>
+          <a href="#features">触发因素分析</a>
+          <a href="#features">疏解方案库</a>
+        </div>
+        <div class="foot-col">
+          <h4>资源</h4>
+          <a href="#more">情绪周报</a>
+          <a href="#faq">科学依据</a>
+          <a href="#faq">心理支持资源</a>
+          <a href="#faq">帮助中心</a>
+        </div>
+        <div class="foot-col">
+          <h4>关于</h4>
+          <a href="#top">品牌故事</a>
+          <a href="#faq">隐私与安全</a>
+          <a href="#top">加入我们</a>
+          <a href="#top">联系客服</a>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="foot-bottom">
+      <span>© 2026 情绪星球 MoodPlanet</span>
+      <span>隐私政策 · 服务条款 · Cookie 设置</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// FAQ 手风琴
+document.querySelectorAll('.faq-q').forEach(function(q){
+  q.addEventListener('click', function(){
+    var item = q.parentElement;
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+// 滚动淡入
+var observer = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      e.target.style.opacity = 1;
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+},{threshold:.12});
+document.querySelectorAll('.card, .cta-card').forEach(function(el){
+  el.style.opacity = 0;
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity .7s ease, transform .7s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
